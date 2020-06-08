@@ -6,7 +6,7 @@ En este repositorio se podrá encontrar un archivo de código R  Clean_Dataset.R
 La creación de un dataset limpio que permita poder realizar un estudio acerca del contenido de las variables que definen el formato de los datasets (principalmente, las variables Atributos e Instancias). Además, poder categorizar el tipo de datasets que contiene el repositorio UCI de manera rápida y acertada.
 
 # 3. FUNCIONAMIENTO DEL CÓDIGO
-El código R permite la recuperación y creación de un dataset en formato CSV. basado en el dataset original, pero filtrando y limpiando entradas y variables que, más que aportar valor, hacían más difícil el estudio del contenido del repositorio UCI. El dataset resultante se puede encontrar en el presente repositorio bajo el nombre "" 
+El código R permite la recuperación y creación de un dataset en formato CSV. basado en el dataset original, pero filtrando y limpiando entradas y variables que, más que aportar valor, hacían más difícil el estudio del contenido del repositorio UCI. El dataset resultante se puede encontrar en el presente repositorio bajo el nombre "dataset_clean.csv" 
 
 # 4. REQUISITOS
 Para poder ejecutar el script de R es necesario instalar los siguientes paquetes o librerías:
