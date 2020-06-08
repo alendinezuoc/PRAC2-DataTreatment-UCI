@@ -15,7 +15,7 @@ library(nortest)
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 #cargamos los datos y añadimos las columnas
-datos <- read.csv('dataset.csv',stringsAsFactors = FALSE)
+datos <- read.csv('Machine_Learning_Repository.csv',stringsAsFactors = FALSE)
 
 names(datos) <- c('Nombre', 'TipoDato','DefaultTask', 'Atributos', 'Instancias', 'NumeroAtributos')
 
@@ -55,7 +55,6 @@ nrow(datos)
 #Normalización del campo Atributos vacios a Undefined
 datos$Atributos <- ifelse(datos$Atributos == " ", "Undefined", datos$Atributos)
 
-# habría que contemplar si afecta poner las intancias a 0 o a -1, a priori me parece indiferente
 #Normalización del campo Instancias vacios a '0'
 datos$Instancias <- ifelse(is.na(datos$Instancias), 0, datos$Instancias)
 
