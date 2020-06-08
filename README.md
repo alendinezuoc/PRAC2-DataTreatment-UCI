@@ -1,6 +1,6 @@
 # PRAC2-DataTreatment-UCI
 # 1. INTRODUCCIÓN
-En este repositorio se podrá encontrar un archivo de código R  Clean_Dataset_Machine_Repository que realiza un limpiado y normalización del dataset extraído en la anterior práctica de Web Scrapping de una página web (en este caso, la URL se corresponde con el repositorio de Machine Learning de UCI http://archive.ics.uci.edu/ml/datasets.php).
+En este repositorio se podrá encontrar un archivo de código R  Clean_Dataset.Rmd que realiza un limpiado y normalización del dataset extraído en la anterior práctica de Web Scrapping de una página web (en este caso, la URL se corresponde con el repositorio de Machine Learning de UCI http://archive.ics.uci.edu/ml/datasets.php).
 
 # 2. FINALIDAD
 La creación de un dataset limpio que permita poder realizar un estudio acerca del contenido de las variables que definen el formato de los datasets (principalmente, las variables Atributos e Instancias). Además, poder categorizar el tipo de datasets que contiene el repositorio UCI de manera rápida y acertada.
