@@ -1,0 +1,178 @@
+---
+title: "bbddanaliticas"
+author: "Autor: David López de la Fuente y Alberto Lendínez Gutiérrez"
+date: "9 Junio 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(nortest)
+
+```
+
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+#cargamos los datos y añadimos las columnas
+datos <- read.csv('dataset.csv',stringsAsFactors = FALSE)
+
+names(datos) <- c('Nombre', 'TipoDato','DefaultTask', 'Atributos', 'Instancias', 'NumeroAtributos')
+
+sapply(datos, function(x) class(x))
+
+#observamos datos medios del dataframe
+summary(datos)
+
+#observamos la estructura del dataframe
+str(datos, vec.len = 2, strict.width = "no", width = 30)
+
+#cantidad de datos iniciales
+datosIniciales <- length(datos)
+
+#Primero datos de los datos iniciales
+head(datos)
+```
+
+
+
+```{r echo=TRUE}
+#Integración y normalización de los datos
+nrow(datos)
+
+#Eliminación de rows sin Nombre
+datos <-datos[!(datos$Nombre == "Undocumented"),]
+nrow(datos)
+
+#Eliminación de rows con única información Nombre y Tipo de dato
+datos <-datos[!((datos$DefaultTask == " " & datos$Atributos== " ") & is.na(datos$Instancias) & is.na(datos$NumeroAtributos)),]
+nrow(datos)
+
+#Eliminación de campos sin Atributos ni Instancias
+datos <-datos[!((datos$Atributos== " ") & is.na(datos$Instancias)),]
+nrow(datos)
+
+#Normalización del campo Atributos vacios a Undefined
+datos$Atributos <- ifelse(datos$Atributos == " ", "Undefined", datos$Atributos)
+
+# habría que contemplar si afecta poner las intancias a 0 o a -1, a priori me parece indiferente
+#Normalización del campo Instancias vacios a '0'
+datos$Instancias <- ifelse(is.na(datos$Instancias), 0, datos$Instancias)
+
+#Normalización del campo Número de Atributos vacios a '0'
+datos$NumeroAtributos <- ifelse(is.na(datos$NumeroAtributos), 0, datos$NumeroAtributos)
+
+#Normalización del campo DefaultTask vacios a Undefined
+datos$DefaultTask <- ifelse(datos$DefaultTask == " ", "Undefined", datos$DefaultTask)
+```
+
+
+```{r echo=TRUE}
+#Limpieza de los datos
+
+#Busqueda de valores extremos
+# instancias enormes, esto puede no ser un problema?¿
+extremosInst <- boxplot.stats(datos$Instancias)$out
+boxplot(datos$Instancias, main='Instancias')
+#observamos valores extremos en el número de atributos
+extremosNA <- boxplot.stats(datos$NumeroAtributos)$out
+#Pintamos el boxplot
+boxplot(datos$NumeroAtributos, main='Número de Atributos')
+
+#Observamos el valor mínimo dentro de los valores extremos
+min(extremosInst)
+#Calculamos la media de los valores actuales
+mean(datos$Instancias)
+
+#Eliminamos los valores extremos en las Instancias
+datos <-datos[!((datos$Instancias >= min(extremosInst))),]
+nrow(datos)
+#Nueva media recalculada
+mean(datos$Instancias)
+#Volvemos pintar el boxplot
+boxplot(datos$Instancias, main='Número de Instancias')
+
+#Observamos el valor mínimo dentro de los valores extremos
+min(extremosNA)
+#Calculamos la media de los valores actuales
+mean(datos$NumeroAtributos)
+
+#Eliminamos los valores extremos en los NumeroAtributos
+datos <-datos[!((datos$NumeroAtributos >= min(extremosNA))),]
+nrow(datos)
+#Nueva media recalculada
+mean(datos$NumeroAtributos)
+#Volvemos pintar el boxplot
+boxplot(datos$NumeroAtributos, main='Número de Atributos')
+
+
+
+```
+
+```{r echo=TRUE}
+#Búsqueda de dentor de las variables cuantitavias distribuciones normales
+
+alpha = 0.05
+col.names = colnames(datos)
+for (i in 1:ncol(datos)) {
+  if (i == 1) cat("Variables que no siguen una distribución normal:\n")
+  if (is.integer(datos[,i]) | is.numeric(datos[,i])) {
+    p_val = ad.test(datos[,i])$p.value
+      if (p_val < alpha) {
+        cat(col.names[i] )
+        # Format output
+        if (i < ncol(datos) - 1) cat(", ")
+        if (i %% 1 == 0) cat(" \n")
+    }
+  }
+}
+```
+
+```{r echo=TRUE}
+#Revisión de datos normalizados
+
+par(mfrow=c(2,2))
+for(i in 1:ncol(datos)) {
+  if (is.numeric(datos[,i])){
+    qqnorm(datos[,i],main = paste("Normal Q-Q Plot for ",colnames(datos)[i]))
+    qqline(datos[,i],col="red")
+    hist(datos[,i],
+      main=paste("Histogram for ", colnames(datos)[i]),
+      xlab=colnames(datos)[i], freq = FALSE)
+  }
+}
+```
+
+```{r echo=TRUE}
+shapiro.test(datos$Instancias)
+shapiro.test(datos$NumeroAtributos)
+```
+
+
+```{r echo=TRUE}
+#Función para imprimir histogramas
+plotn <- function(x,main="Histograma de frecuencias \ny distribución normal",
+                  xlab="X",ylab="Densidad") {
+                  min <- min(x)
+                  max <- max(x)
+                  media <- mean(x)
+                  dt <- sd(x)
+                  hist(x,freq=F,main=main,xlab=xlab,ylab=ylab)
+                  curve(dnorm(x,media,dt), min, max,add = T,col="blue")
+                }
+```
+
+```{r echo=TRUE}
+#Representación visual de los datos
+plotn(datos$Instancias)
+plotn(datos$NumeroAtributos)
+ggplot(datos, aes(Atributos)) +geom_bar(fill = "#0073C2FF") + theme(axis.text.x = element_text(angle=45, vjust = 0.5))
+ggplot(datos, aes(DefaultTask)) +geom_bar(fill = "#0073C2FF")  + theme(axis.text.x = element_text(angle=45, vjust = 0.6))
+ggplot(datos, aes(NumeroAtributos)) +geom_bar(fill = "#0073C2FF") 
+
+```
+
+```{r echo=TRUE}
+# Exportación de los datos limpios en .csv
+write.csv(datos, "dataset_clean.csv")
+```
