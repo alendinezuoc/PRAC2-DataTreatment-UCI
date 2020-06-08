@@ -1,12 +1,12 @@
 # PRAC2-DataTreatment-UCI
 # 1. INTRODUCCIÓN
-En este repositorio se podrá encontrar un archivo de código R  Clean_Dataset.Rmd que realiza un limpiado y normalización del dataset extraído en la anterior práctica de Web Scrapping de una página web (en este caso, la URL se corresponde con el repositorio de Machine Learning de UCI http://archive.ics.uci.edu/ml/datasets.php).
+En este repositorio se podrá encontrar un archivo de código R  Clean_Dataset.Rmd que realiza un limpiado y normalización del dataset extraído en la anterior práctica de Web Scrapping de una página web (en este caso, la URL se corresponde con el repositorio de Machine Learning de UCI http://archive.ics.uci.edu/ml/datasets.php). El archivo en formato .csv puede ser encontrado en el repositorio bajo el nombre "Machine_Learning_Repository.csv"
 
 # 2. FINALIDAD
 La creación de un dataset limpio que permita poder realizar un estudio acerca del contenido de las variables que definen el formato de los datasets (principalmente, las variables Atributos e Instancias). Además, poder categorizar el tipo de datasets que contiene el repositorio UCI de manera rápida y acertada.
 
 # 3. FUNCIONAMIENTO DEL CÓDIGO
-El código R permite la recuperación y creación de un dataset en formato CSV. basado en el dataset original, pero filtrando y limpiando entradas y variables que, más que aportar valor, hacían más difícil el estudio del contenido del repositorio UCI. 
+El código R permite la recuperación y creación de un dataset en formato CSV. basado en el dataset original, pero filtrando y limpiando entradas y variables que, más que aportar valor, hacían más difícil el estudio del contenido del repositorio UCI. El dataset resultante se puede encontrar en el presente repositorio bajo el nombre "" 
 
 # 4. REQUISITOS
 Para poder ejecutar el script de R es necesario instalar los siguientes paquetes o librerías:
